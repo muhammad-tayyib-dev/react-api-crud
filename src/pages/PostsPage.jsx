@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import {  getData } from '../services/postService'
 import PostCard from '../components/PostCard';
-
+import { Atom } from 'react-loading-indicators';
 
 
 
@@ -11,7 +11,7 @@ const PostsPage = () => {
 
 
   const [data, setData] = useState([]);
-  
+  const [Loading, setLoading] = useState(true)
   
 
   
@@ -26,7 +26,7 @@ const PostsPage = () => {
       const res = await getData();
 
       setData(res.data)
-
+      setLoading(false)
     } catch (error) {
       console.log(error);
       
@@ -41,7 +41,11 @@ const PostsPage = () => {
 
 
 
-
+if (Loading) {
+   return <div className='w-full h-lvh flex justify-center items-center ' >
+        <Atom color="#32cd32" size="large" text="Loading ....." textColor="" />
+   </div>
+}
 
 
 
