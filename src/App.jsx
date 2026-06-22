@@ -1,8 +1,11 @@
 import React from 'react'
+import PostsPage from './pages/PostsPage'
 
 const App = () => {
   return (
-    <div>App</div>
+    <>
+        <PostsPage />
+    </>
   )
 }
 
