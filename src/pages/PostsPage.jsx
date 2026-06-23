@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import {  addData, deleteData, getData } from '../services/postService'
+import {  addData, deleteData, getData, updateData } from '../services/postService'
 import PostCard from '../components/PostCard';
 import { Atom } from 'react-loading-indicators';
 
@@ -105,14 +105,44 @@ const PostsPage = () => {
 
 
 
+  // < ----------------------------------- Added Update Post functionality  -------------------------------------->
 
 
 
-    const handleAddBtn = () =>{
+
+    const UpdatePostData = async () =>{
+
+
+        const res = await updateData( EditedPost.id , Input);
+
+        if (res.status === 200 ) {
+
+            const UpdatedPost =  data.map((curPost) => {
+                if (curPost.id == EditedPost.id) {
+                return res.data;
+                } else {
+                return curPost ;
+                }
+            })
+
+            setData(UpdatedPost)
+        }
+
+            setInput({
+                title: '',
+                body :'',
+                })
+            setEditedPost("")
         
-        AddPostData()
-        
+
     }
+
+
+
+
+
+
+    const handleAddBtn = () => (EditedPost.id ? UpdatePostData() : AddPostData())
 
 
 
@@ -168,7 +198,7 @@ if (Loading) {
             <button className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-8 py-3 rounded-xl transition-all duration-300 cursor-pointer "
                 onClick={handleAddBtn}
             >
-              Add
+              { EditedPost.id ? 'Update':'Add' }
             </button>
           </div>
         </div>

@@ -20,3 +20,7 @@ export const deleteData = (id) =>{
 export const addData = (post) =>{
     return API.post('/posts', post)
 }
+
+export const updateData = (id , updatedPost ) =>{
+    return API.put(`/posts/${id}`, updatedPost )
+}
