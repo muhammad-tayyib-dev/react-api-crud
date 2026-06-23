@@ -1,5 +1,5 @@
 
-const PostCard = ({post  }) => {
+const PostCard = ({post , handleDeleteBtn  }) => {
     const { id , title , body } = post;
   return (
     <>
@@ -51,7 +51,7 @@ const PostCard = ({post  }) => {
                     duration-300
                     cursor-pointer
                 "
-                    
+                    onClick={() => handleDeleteBtn(id) }
                 >
                 Delete
                 </button>

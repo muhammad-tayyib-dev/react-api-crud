@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import {  getData } from '../services/postService'
+import {  deleteData, getData } from '../services/postService'
 import PostCard from '../components/PostCard';
 import { Atom } from 'react-loading-indicators';
 
@@ -32,11 +32,33 @@ const PostsPage = () => {
       
     }
     
-  }
+    }
 
-  useEffect(() => {
-    getPostData()
-  }, [])
+    useEffect(() => {
+        getPostData()
+    }, [])
+
+
+// < ----------------------------------- Delete Functionality -------------------------------------->
+
+    const DeletePostData = async (id) =>{
+    const res = await deleteData(id);
+    // console.log(id);
+    
+    if (res.status == 200 ) {
+        const updatedData = data.filter((CurElem) => {
+        return CurElem.id != id;
+        })
+
+        setData(updatedData);
+    }
+    
+    }
+
+
+
+
+
 
 
 
@@ -95,7 +117,7 @@ if (Loading) {
           
           {
              data.map((curPost) =>{
-              return <PostCard key={curPost.id}  post={curPost}   />
+              return <PostCard key={curPost.id}  post={curPost} handleDeleteBtn = {DeletePostData}   />
             } )
           }
         </div>

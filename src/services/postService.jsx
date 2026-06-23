@@ -12,3 +12,7 @@ export const getData = () =>{
 }
 
 
+export const deleteData = (id) =>{
+    return API.delete(`/posts/${id}`)
+}
+
