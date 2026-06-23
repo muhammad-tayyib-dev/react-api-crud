@@ -17,7 +17,7 @@ const PostsPage = () => {
     title : '',
     body: '',
   });
-  const [EditedPost, setEditedPost] = useState('')
+  const [EditedPost, setEditedPost] = useState(null)
 
   
 
@@ -34,7 +34,9 @@ const PostsPage = () => {
       setLoading(false)
     } catch (error) {
       console.log(error);
-      
+    }
+    finally{
+    setLoading(false);
     }
     
     }
@@ -47,16 +49,30 @@ const PostsPage = () => {
 // < ----------------------------------- Delete Functionality -------------------------------------->
 
     const DeletePostData = async (id) =>{
-    const res = await deleteData(id);
+
+        const confirmDelete = window.confirm("Are you sure you want to delete?");
+
+        if(!confirmDelete) return;
+
     
+        try {
 
-    if (res.status == 200 ) {
-        const updatedData = data.filter((CurElem) => {
-        return CurElem.id != id;
-        })
+            const res = await deleteData(id);
 
-        setData(updatedData);
-    }
+            if (res.status === 200 ) {
+                const updatedData = data.filter((CurElem) => {
+                return CurElem.id != id;
+                })
+
+                setData(updatedData);
+            }
+
+            
+        } catch (error) {
+
+            console.log(error);
+            
+        }
     
     }
 
@@ -65,7 +81,7 @@ const PostsPage = () => {
   // < ----------------------------------- Add- Data Functionality -------------------------------------->
 
 
-    const handleOnChane = (e) =>{
+    const handleOnChange = (e) =>{
         const {name , value } = e.target;
         setInput({...Input , [name] : value})
 
@@ -75,14 +91,22 @@ const PostsPage = () => {
 
     const AddPostData = async () =>{
         
-        const res = await addData(Input);
+        try {
 
-        if (res.status == 201) {
-            setData([  ...data , res.data ])
-            setInput({
-            title: '',
-            body :'',
-            })
+            const res = await addData(Input);
+
+            if (res.status === 201) {
+                setData([  ...data , res.data ])
+                setInput({
+                title: '',
+                body :'',
+                })
+            }
+
+            
+        } catch (error) {
+
+            console.log(error);
         }
         
     }
@@ -112,27 +136,34 @@ const PostsPage = () => {
 
     const UpdatePostData = async () =>{
 
+        try {
 
-        const res = await updateData( EditedPost.id , Input);
+            const res = await updateData( EditedPost.id , Input);
 
-        if (res.status === 200 ) {
+            if (res.status === 200 ) {
 
-            const UpdatedPost =  data.map((curPost) => {
-                if (curPost.id == EditedPost.id) {
-                return res.data;
-                } else {
-                return curPost ;
-                }
-            })
-
-            setData(UpdatedPost)
-        }
-
-            setInput({
-                title: '',
-                body :'',
+                const UpdatedPost =  data.map((curPost) => {
+                    if (curPost.id == EditedPost.id) {
+                    return res.data;
+                    } else {
+                    return curPost ;
+                    }
                 })
-            setEditedPost("")
+
+                setData(UpdatedPost)
+            }
+
+                setInput({
+                    title: '',
+                    body :'',
+                    })
+                setEditedPost("")
+
+            
+        } catch (error) {
+
+            console.log(error);
+        }
         
 
     }
@@ -142,7 +173,14 @@ const PostsPage = () => {
 
 
 
-    const handleAddBtn = () => (EditedPost.id ? UpdatePostData() : AddPostData())
+    const handleAddBtn = () => {
+         if (!Input.title.trim() || !Input.body.trim()) {
+            alert("Please fill all fields");
+            return; 
+        }
+
+        EditedPost ? UpdatePostData() : AddPostData()
+    }
 
 
 
@@ -183,7 +221,7 @@ if (Loading) {
               placeholder="Enter Title"
               className="flex-1 px-4 py-3 border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500"
               value={Input.title}
-              onChange={handleOnChane}
+              onChange={handleOnChange}
             />
 
             <input
@@ -192,13 +230,13 @@ if (Loading) {
               placeholder="Enter Description"
               className="flex-1 px-4 py-3 border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500"
               value={Input.body}
-              onChange={handleOnChane}
+              onChange={handleOnChange}
             />
 
             <button className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-8 py-3 rounded-xl transition-all duration-300 cursor-pointer "
                 onClick={handleAddBtn}
             >
-              { EditedPost.id ? 'Update':'Add' }
+              { EditedPost ? 'Update':'Add' }
             </button>
           </div>
         </div>
