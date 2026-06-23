@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import {  addData, deleteData, getData, updateData } from '../services/postService'
 import PostCard from '../components/PostCard';
 import { Atom } from 'react-loading-indicators';
+import toast from 'react-hot-toast';
 
 
 
@@ -65,13 +66,15 @@ const PostsPage = () => {
                 })
 
                 setData(updatedData);
+
+                toast.success("Post Deleted Successfully")
             }
 
             
         } catch (error) {
 
             console.log(error);
-            
+            toast.error("Something went wrong")
         }
     
     }
@@ -101,12 +104,15 @@ const PostsPage = () => {
                 title: '',
                 body :'',
                 })
+
+                toast.success("Post Added Successfully");
             }
 
             
         } catch (error) {
 
             console.log(error);
+            toast.error("Something went wrong");
         }
         
     }
@@ -151,6 +157,8 @@ const PostsPage = () => {
                 })
 
                 setData(UpdatedPost)
+
+                toast.success("Post Updated Successfully")
             }
 
                 setInput({
@@ -163,6 +171,7 @@ const PostsPage = () => {
         } catch (error) {
 
             console.log(error);
+            toast.error("Something went wrong")
         }
         
 
