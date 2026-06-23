@@ -17,6 +17,7 @@ const PostsPage = () => {
     title : '',
     body: '',
   });
+  const [EditedPost, setEditedPost] = useState('')
 
   
 
@@ -85,6 +86,24 @@ const PostsPage = () => {
         }
         
     }
+
+
+  // < ----------------------------------- Add Edit Mode For Post -------------------------------------->
+
+
+    const EditPost = (post) =>{
+
+        setEditedPost(post)
+
+        setInput({
+            title: post.title,
+            body : post.body
+        })
+        
+        
+    }
+
+
 
 
 
@@ -159,7 +178,7 @@ if (Loading) {
           
           {
              data.map((curPost) =>{
-              return <PostCard key={curPost.id}  post={curPost} handleDeleteBtn = {DeletePostData}   />
+              return <PostCard key={curPost.id}  post={curPost} handleDeleteBtn = {DeletePostData} handleEditBtn={EditPost}   />
             } )
           }
         </div>

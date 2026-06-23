@@ -1,5 +1,5 @@
 
-const PostCard = ({post , handleDeleteBtn  }) => {
+const PostCard = ({post , handleDeleteBtn , handleEditBtn  }) => {
     const { id , title , body } = post;
   return (
     <>
@@ -33,7 +33,7 @@ const PostCard = ({post , handleDeleteBtn  }) => {
                     duration-300
                     cursor-pointer
                 "
-                
+                    onClick={() => handleEditBtn(post)}
                 >
                 Edit
                 </button>
